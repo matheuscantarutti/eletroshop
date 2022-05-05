@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('descricao');
             $table->string('tensao', 4);
+            $table->foreignId('marca_id')->constrained('marcas');
         });
     }
 
