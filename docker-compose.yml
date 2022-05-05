@@ -1,0 +1,65 @@
+version: "3.7"
+services:
+  backend:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    user: "www-data:www-data"
+    tty: true
+    env_file: ./api/.env
+    environment:
+      SERVICE_NAME: backend
+      SERVICE_TAGS: dev
+    working_dir: /var/www/html/
+    volumes:
+      - ./api:/var/www/html/
+      - ./php/laravel.ini:/usr/local/etc/php/conf.d/laravel.ini
+    networks:
+      - eletroshop
+
+  db:
+    image: mysql:8.0
+    container_name: eletroshop-db
+    restart: unless-stopped
+    env_file: ./api/.env
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_NAME: mysql
+    networks:
+      - eletroshop
+
+  nginx:
+    depends_on:
+      - backend
+      - frontend
+    build:
+      context: ./api/nginx
+      dockerfile: Dockerfile
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+    networks:
+      - eletroshop
+
+  frontend:
+    stdin_open: true
+    container_name: frontend
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - /app/node_modules
+      - ./client:/var/www/html/
+    networks:
+      - eletroshop
+
+networks:
+  eletroshop:
+    driver: bridge
