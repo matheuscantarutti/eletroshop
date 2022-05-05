@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.1.5-fpm
 
 RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
