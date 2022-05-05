@@ -22,7 +22,7 @@ class EletrodomesticoFactory extends Factory
             'nome' => $faker->word,
             'descricao' => $faker->bs,
             'tensao'=> '220v',
-            'marca_id' => Marca::factory()->make()->id
+            'marca_id' => Marca::inRandomOrder()->first()->id
         ];
     }
 }
