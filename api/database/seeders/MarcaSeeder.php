@@ -25,7 +25,9 @@ class MarcaSeeder extends Seeder
 
         foreach ($marcas as $marca) {
             DB::table('marcas')->insert([
-                'name' => $marca,
+                'nome' => $marca,
+                'created_at' => now(),
+                'updated_at' => now()
             ]);
         }
 
