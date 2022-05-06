@@ -20,7 +20,7 @@ class EletrodomesticoFactory extends Factory
         $faker = \Faker\Factory::create('pt_BR');
         return [
             'nome' => $faker->word,
-            'descricao' => $faker->bs,
+            'descricao' => $faker->sentence,
             'tensao'=> '220v',
             'marca_id' => Marca::inRandomOrder()->first()->id
         ];
